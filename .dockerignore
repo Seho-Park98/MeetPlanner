@@ -3,3 +3,13 @@ fly.toml
 __pycache__/
 .envrc
 .venv/
+*.pyc
+*.pyo
+.env
+.env.*
+*.log
+.vscode
+.idea
+nul
+test_*.py
+map_result_*.html
