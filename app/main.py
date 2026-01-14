@@ -1,5 +1,8 @@
+import json
+import os
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import JSONResponse
 from dotenv import load_dotenv
 
 from .models import RecommendRequest, RecommendResponse, HealthResponse, Recommendation, FairnessScore, PurposeScore
@@ -35,6 +38,17 @@ explanation_generator = ExplanationGenerator()
 @app.get("/health", response_model=HealthResponse)
 async def health_check():
     return HealthResponse(status="ok", service="MeetPlanner MCP")
+
+
+@app.get("/mcp.json")
+async def get_mcp_spec():
+    """MCP 명세 파일 반환"""
+    mcp_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), "mcp.json")
+    try:
+        with open(mcp_path, "r", encoding="utf-8") as f:
+            return JSONResponse(content=json.load(f))
+    except FileNotFoundError:
+        raise HTTPException(status_code=404, detail="mcp.json not found")
 
 
 @app.post("/recommend", response_model=RecommendResponse)
