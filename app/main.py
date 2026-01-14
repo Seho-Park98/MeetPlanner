@@ -43,12 +43,17 @@ async def health_check():
 @app.get("/mcp.json")
 async def get_mcp_spec():
     """MCP 명세 파일 반환"""
-    mcp_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), "mcp.json")
-    try:
-        with open(mcp_path, "r", encoding="utf-8") as f:
-            return JSONResponse(content=json.load(f))
-    except FileNotFoundError:
-        raise HTTPException(status_code=404, detail="mcp.json not found")
+    # Docker 환경: /app/mcp.json
+    possible_paths = [
+        "/app/mcp.json",
+        os.path.join(os.path.dirname(os.path.dirname(__file__)), "mcp.json"),
+        "mcp.json"
+    ]
+    for mcp_path in possible_paths:
+        if os.path.exists(mcp_path):
+            with open(mcp_path, "r", encoding="utf-8") as f:
+                return JSONResponse(content=json.load(f))
+    raise HTTPException(status_code=404, detail="mcp.json not found")
 
 
 @app.post("/recommend", response_model=RecommendResponse)
