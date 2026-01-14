@@ -1,0 +1,113 @@
+{
+  "name": "MeetPlanner MCP",
+  "version": "1.0.0",
+  "description": "여러 사용자의 출발 위치와 만남 목적을 입력받아 최적의 만남 장소를 추천하는 MCP 서버",
+  "base_url": "https://meetplanner.onrender.com",
+  "endpoints": [
+    {
+      "name": "health",
+      "method": "GET",
+      "path": "/health",
+      "description": "서버 상태 확인"
+    },
+    {
+      "name": "recommend",
+      "method": "POST",
+      "path": "/recommend",
+      "description": "참가자들의 출발지와 만남 목적을 기반으로 최적의 만남 장소 추천",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "participants": {
+            "type": "array",
+            "description": "참가자 목록",
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "description": "참가자 이름"
+                },
+                "origin_text": {
+                  "type": "string",
+                  "description": "출발 위치 (주소 또는 장소명, 예: 강남역, 서울시 강남구)"
+                }
+              },
+              "required": ["name", "origin_text"]
+            },
+            "minItems": 2
+          },
+          "purpose": {
+            "type": "string",
+            "description": "만남 목적",
+            "enum": ["cafe_talk", "restaurant", "shopping", "business", "culture", "entertainment", "study", "date"],
+            "default": "cafe_talk"
+          }
+        },
+        "required": ["participants"]
+      },
+      "output_schema": {
+        "type": "object",
+        "properties": {
+          "recommendations": {
+            "type": "array",
+            "description": "추천 장소 목록 (최대 5개, 순위순)",
+            "items": {
+              "type": "object",
+              "properties": {
+                "rank": {
+                  "type": "integer",
+                  "description": "순위"
+                },
+                "label": {
+                  "type": "string",
+                  "description": "장소명"
+                },
+                "lat": {
+                  "type": "number",
+                  "description": "위도"
+                },
+                "lng": {
+                  "type": "number",
+                  "description": "경도"
+                },
+                "eta_by_participant": {
+                  "type": "object",
+                  "description": "참가자별 예상 이동 시간 (분)"
+                },
+                "fairness": {
+                  "type": "object",
+                  "description": "공정성 점수",
+                  "properties": {
+                    "std": {
+                      "type": "number",
+                      "description": "이동 시간 표준편차"
+                    },
+                    "mean": {
+                      "type": "number",
+                      "description": "평균 이동 시간"
+                    }
+                  }
+                },
+                "purpose": {
+                  "type": "object",
+                  "description": "목적 적합도 점수",
+                  "properties": {
+                    "score": {
+                      "type": "number",
+                      "description": "목적 적합도 점수"
+                    }
+                  }
+                },
+                "why": {
+                  "type": "string",
+                  "description": "추천 이유 설명 (한국어)"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  ]
+}
