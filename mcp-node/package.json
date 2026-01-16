@@ -1,14 +1,24 @@
 {
   "name": "meetplanner-mcp",
   "version": "1.0.0",
-  "description": "MeetPlanner MCP Server using official MCP SDK",
+  "description": "MeetPlanner MCP Server - Streamable HTTP Transport (MCP 2025-03-26 compliant)",
   "main": "index.js",
   "type": "module",
   "scripts": {
     "start": "node index.js"
   },
   "dependencies": {
-    "@modelcontextprotocol/sdk": "^1.0.0",
+    "@modelcontextprotocol/sdk": "^1.25.2",
     "express": "^4.18.2"
-  }
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "streamable-http",
+    "meeting-planner"
+  ],
+  "license": "MIT"
 }

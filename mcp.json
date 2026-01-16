@@ -1,24 +1,22 @@
 {
-  "schemaVersion": "1.0",
   "protocolVersion": "2025-03-26",
   "serverInfo": {
-    "name": "MeetPlanner MCP",
-    "version": "1.0.0",
-    "description": "Recommend a fair meeting location based on transit-time fairness and purpose."
-  },
-  "endpoint": {
-    "method": "POST",
-    "url": "https://meetplanner.fly.dev/mcp"
+    "name": "meetplanner-mcp",
+    "version": "1.0.0"
   },
   "capabilities": {
     "tools": {
       "listChanged": false
     }
   },
+  "endpoint": {
+    "method": "POST",
+    "url": "https://meetplanner.fly.dev/mcp"
+  },
   "tools": [
     {
       "name": "recommend_meeting_place",
-      "description": "Recommend a fair meeting location based on transit-time fairness and purpose.",
+      "description": "Recommend a fair meeting location based on transit-time fairness and purpose. Analyzes travel times from multiple participant locations to suggest optimal meeting points in Seoul/Korea.",
       "inputSchema": {
         "type": "object",
         "properties": {
