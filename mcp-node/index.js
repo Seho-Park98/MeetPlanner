@@ -432,13 +432,20 @@ app.get("/mcp.json", (req, res) => {
 });
 
 // =============================================================================
-// Start Server
+// Start Server - Bind to 0.0.0.0 for Fly.io compatibility
 // =============================================================================
-const PORT = process.env.PORT || 3000;
+const PORT = parseInt(process.env.PORT, 10) || 3000;
+const HOST = "0.0.0.0";
 
-app.listen(PORT, "0.0.0.0", () => {
-  console.log(`MCP Server running on http://0.0.0.0:${PORT}`);
+app.listen(PORT, HOST, () => {
+  console.log("=".repeat(60));
+  console.log("MeetPlanner MCP Server Started Successfully");
+  console.log("=".repeat(60));
+  console.log(`Server listening on ${HOST}:${PORT}`);
+  console.log(`Health check: http://${HOST}:${PORT}/health`);
+  console.log(`MCP endpoint: http://${HOST}:${PORT}/mcp`);
   console.log(`Protocol Version: ${MCP_PROTOCOL_VERSION}`);
   console.log(`Transport: Streamable HTTP`);
   console.log(`FastAPI backend: ${FASTAPI_URL}`);
+  console.log("=".repeat(60));
 });
